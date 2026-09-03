@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#7f141f">
+  <title>Fortune Lynx — Nebula Games V1.1</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-shell tiger-layout">
+    <header class="compact-gamebar">
+      <a class="back-link" href="../../index.html">← Nebula</a>
+      <div class="compact-title">
+        <strong>Fortune Lynx</strong>
+        <span>Nebula Originals</span>
+      </div>
+      <div class="compact-actions">
+        <button class="mini-icon" id="soundBtn" aria-label="Som">Som</button>
+      </div>
+    </header>
+
+    <main class="game-layout tiger-game-layout">
+      <section class="machine-panel tiger-machine-panel">
+        <div class="game-header-card hidden-preserved">
+          <img class="logo-cover" src="assets/cover.png" alt="Fortune Lynx capa">
+          <div class="title-copy">
+            <span class="eyebrow">SLOT 3x3 • BASE DE TESTE</span>
+            <h2>Interface jogável pronta</h2>
+            <p>Base preservada para evolução.</p>
+          </div>
+        </div>
+
+        <div class="jackpot-strip hidden-preserved" aria-label="Painel visual de jackpots">
+          <div><span>MINI</span><strong>R$ 25,00</strong></div>
+          <div><span>MAJOR</span><strong>R$ 250,00</strong></div>
+          <div><span>GRAND</span><strong>R$ 2.500,00</strong></div>
+        </div>
+
+        <div class="lynx-stage tiger-lynx-stage" id="lynxStage">
+          <div class="lynx-energy lynx-energy-hidden" aria-hidden="true">
+            <div class="lynx-energy-head"><span>POTE DO LINCE</span><strong id="bonusChargeLabel">0%</strong></div>
+            <div class="lynx-energy-track"><i id="bonusChargeFill"></i></div>
+          </div>
+          <div class="lynx-mascot-wrap tiger-mascot-wrap">
+            <span class="lynx-x10-badge">POTE x10</span>
+            <img class="lynx-character" id="lynxCharacter" src="assets/character/lynx-top.png" data-static-src="assets/character/lynx-top.png" data-gif-src="assets/character/lynx-bonus.gif" alt="Lince do Fortune Lynx">
+            <div class="lynx-aura" aria-hidden="true"></div>
+            <div class="lynx-pot-drop" id="lynxPotDrop" aria-hidden="true">
+              <img src="assets/symbols/gold.png" alt="Pote bônus">
+              <strong id="lynxPotValue">+ R$ 0,00</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="slot-machine tiger-slot-machine" id="slotMachine">
+          <div class="paylines" aria-hidden="true">
+            <span class="line h1"></span><span class="line h2"></span><span class="line h3"></span><span class="line d1"></span><span class="line d2"></span>
+          </div>
+          <div class="win-flash" id="winFlash" aria-hidden="true"></div>
+          <div class="coin-rain" id="coinRain" aria-hidden="true"></div>
+          <div class="grid-frame tiger-grid" id="slotGrid"></div>
+        </div>
+
+        <div class="status-banner tiger-message-strip" id="statusBanner">Pronto para girar.</div>
+
+        <div class="tiger-wallet-strip">
+          <div class="wallet-box"><span>Saldo</span><strong id="balanceInline">R$ 1.000,00</strong></div>
+          <div class="wallet-box center"><span>Último ganho</span><strong id="lastWin">R$ 0,00</strong></div>
+          <div class="wallet-box"><span>Aposta</span><strong id="betValue">R$ 1,00</strong></div>
+        </div>
+
+        <div class="controls tiger-controls">
+          <button class="round-control" id="turboBtn" aria-label="Turbo">⚡</button>
+          <button class="round-control" id="betDown" aria-label="Diminuir aposta">−</button>
+          <div class="spin-stack tiger-spin-stack">
+            <button class="spin-btn tiger-spin-btn" id="spinBtn" aria-label="Girar">↻</button>
+            <div class="quick-balance">Saldo <strong id="balanceQuick">R$ 1.000,00</strong></div>
+          </div>
+          <button class="round-control" id="betUp" aria-label="Aumentar aposta">+</button>
+          <button class="round-control" id="autoBtn" aria-label="Auto x10">▶</button>
+        </div>
+
+        <div class="info-row tiger-info-row">
+          <div class="info-card"><span>Rodadas grátis</span><strong id="freeSpins">0</strong></div>
+          <div class="info-card"><span>Multiplicador bônus</span><strong id="bonusMultiplier">x1</strong></div>
+          <div class="info-card desktop-balance-copy"><span>Saldo demo</span><strong id="balanceTop">R$ 1.000,00</strong></div>
+        </div>
+      </section>
+
+
+    </main>
+  </div>
+
+  <div class="loading-screen" id="loadingScreen">
+    <img src="assets/cover.png" alt="Fortune Lynx">
+    <div class="loading-card">
+      <div class="loading-logo">FORTUNE <b>LYNX</b></div>
+      <strong>Prepare-se para a fortuna</strong>
+      <span id="loadingText">Carregando símbolos...</span>
+      <div class="loading-bar"><i id="loadingFill"></i></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

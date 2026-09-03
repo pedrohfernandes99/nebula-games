@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#7f141f">
+  <title>Dragon Money — Nebula Games V1.1</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-shell">
+    <header class="game-topbar">
+      <a class="back-link" href="../../index.html">← Nebula Games</a>
+      <div class="game-title-wrap">
+        <div>
+          <span class="eyebrow">NEBULA ORIGINAL SLOT</span>
+          <h1>Dragon Money</h1>
+        </div>
+        <div class="top-balance"><span>Saldo demo</span><strong id="balanceTop">R$ 1.000,00</strong></div>
+      </div>
+    </header>
+
+    <main class="game-layout">
+      <section class="machine-panel">
+        <div class="game-header-card">
+          <img class="logo-cover" src="assets/cover.png" alt="Dragon Money capa">
+          <div class="title-copy">
+            <span class="eyebrow">SLOT 3x3 • SEGUNDO JOGO</span>
+            <h2>Dragon Money jogável</h2>
+            <p>Versão jogável inicial do Dragon Money, pronta para testes e futura evolução visual própria.</p>
+          </div>
+        </div>
+
+        <div class="status-banner" id="statusBanner">Pronto para girar.</div>
+
+        <div class="jackpot-strip" aria-label="Painel visual de jackpots">
+          <div><span>MINI</span><strong>R$ 25,00</strong></div>
+          <div><span>MAJOR</span><strong>R$ 250,00</strong></div>
+          <div><span>GRAND</span><strong>R$ 2.500,00</strong></div>
+        </div>
+
+        <div class="lynx-stage" id="lynxStage">
+          <div class="lynx-energy lynx-energy-hidden" aria-hidden="true">
+            <div class="lynx-energy-head"><span>BÔNUS DO DRAGÃO</span><strong id="bonusChargeLabel">0%</strong></div>
+            <div class="lynx-energy-track"><i id="bonusChargeFill"></i></div>
+          </div>
+          <div class="lynx-mascot-wrap">
+            <span class="lynx-x10-badge">DRAGON x10</span>
+            <img class="lynx-character" id="lynxCharacter" src="assets/character/dragon-top.png" data-static-src="assets/character/dragon-top.png" data-gif-src="assets/character/dragon-top.png" alt="Dragão do Dragon Money">
+            <div class="lynx-aura" aria-hidden="true"></div>
+            <div class="lynx-pot-drop" id="lynxPotDrop" aria-hidden="true">
+              <img src="assets/symbols/gold.png" alt="Pote bônus">
+              <strong id="lynxPotValue">+ R$ 0,00</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="slot-machine" id="slotMachine">
+          <div class="paylines" aria-hidden="true">
+            <span class="line h1"></span>
+            <span class="line h2"></span>
+            <span class="line h3"></span>
+            <span class="line d1"></span>
+            <span class="line d2"></span>
+          </div>
+          <div class="win-flash" id="winFlash" aria-hidden="true"></div>
+          <div class="coin-rain" id="coinRain" aria-hidden="true"></div>
+          <div class="grid-frame" id="slotGrid"></div>
+        </div>
+
+        <div class="controls">
+          <div class="control-card mini">
+            <span>Aposta</span>
+            <div class="bet-box">
+              <button id="betDown">−</button>
+              <strong id="betValue">R$ 1,00</strong>
+              <button id="betUp">+</button>
+            </div>
+          </div>
+
+          <div class="spin-stack"><button class="spin-btn" id="spinBtn">GIRAR</button><div class="quick-balance">Saldo: <strong id="balanceQuick">R$ 1.000,00</strong></div></div>
+
+          <div class="control-card mini">
+            <span>Recursos</span>
+            <div class="feature-toggles">
+              <button class="feature active" id="turboBtn">Turbo</button>
+              <button class="feature" id="autoBtn">Auto x10</button>
+              <button class="feature active" id="soundBtn">Som</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-card"><span>Saldo demo</span><strong id="balanceInline">R$ 1.000,00</strong></div>
+          <div class="info-card"><span>Último ganho</span><strong id="lastWin">R$ 0,00</strong></div>
+          <div class="info-card"><span>Rodadas grátis</span><strong id="freeSpins">0</strong></div>
+          <div class="info-card"><span>Multiplicador bônus</span><strong id="bonusMultiplier">x1</strong></div>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <section class="sidebar-card">
+          <h3>Tabela rápida</h3>
+          <div class="paytable" id="paytable"></div>
+        </section>
+
+        <section class="sidebar-card feature-card">
+          <h3>Recursos ativos</h3>
+          <div class="feature-summary">
+            <span>⚡ Turbo</span><span>🔊 Som</span><span>🎁 Free Spins</span><span>✨ Win FX</span>
+          </div>
+        </section>
+
+        <section class="sidebar-card">
+          <h3>Mensagens</h3>
+          <div class="history" id="history"></div>
+        </section>
+
+        <section class="sidebar-card">
+          <h3>Regras base</h3>
+          <ul class="rules">
+            <li>5 linhas avaliadas: 3 horizontais + 2 diagonais.</li>
+            <li>WILD substitui todos os símbolos, exceto SCATTER.</li>
+            <li>3 SCATTER ativam 8 rodadas grátis.</li>
+            <li>Ao entrar no bônus, o multiplicador total é sorteado em 2x, 3x, 4x ou 5x.</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <div class="loading-screen" id="loadingScreen">
+    <img src="assets/cover.png" alt="Dragon Money">
+    <div class="loading-card">
+      <div class="loading-logo">DRAGON <b>MONEY</b></div>
+      <strong>Prepare-se para o poder do dragão</strong>
+      <span id="loadingText">Carregando símbolos...</span>
+      <div class="loading-bar"><i id="loadingFill"></i></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
