@@ -30,7 +30,7 @@ nebula-games-v1.1/
         ├── style.css
         ├── script.js
         └── assets/
-            ├── cover.png
+            ├── cover.webp
             └── symbols/
 ```
 

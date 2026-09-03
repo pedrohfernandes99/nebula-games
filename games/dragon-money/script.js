@@ -17,18 +17,18 @@ const state = {
 };
 
 const symbols = {
-  wild: { label: 'WILD', payout3: 12, payout2: 3, weight: 3, img: 'assets/symbols/wild.png', special: 'wild' },
-  scatter: { label: 'SCATTER', payout3: 0, payout2: 0, weight: 2, img: 'assets/symbols/scatter.png', special: 'scatter' },
-  gold: { label: 'Tesouro', payout3: 8, payout2: 2, weight: 6, img: 'assets/symbols/gold.png' },
-  jade: { label: 'Jade', payout3: 7, payout2: 1.8, weight: 6, img: 'assets/symbols/jade.png' },
-  envelope: { label: 'Envelope', payout3: 6, payout2: 1.6, weight: 7, img: 'assets/symbols/envelope.png' },
-  firecrackers: { label: 'Fogos', payout3: 5.5, payout2: 1.5, weight: 7, img: 'assets/symbols/firecrackers.png' },
-  accessory: { label: 'Acessório', payout3: 6.5, payout2: 1.7, weight: 7, img: 'assets/symbols/accessory.png' },
-  a: { label: 'A', payout3: 4.5, payout2: 1.2, weight: 9, img: 'assets/symbols/a.png' },
-  k: { label: 'K', payout3: 4.2, payout2: 1.1, weight: 9, img: 'assets/symbols/k.png' },
-  q: { label: 'Q', payout3: 4, payout2: 1, weight: 9, img: 'assets/symbols/q.png' },
-  j: { label: 'J', payout3: 3.7, payout2: 0.9, weight: 9, img: 'assets/symbols/j.png' },
-  ten: { label: '10', payout3: 3.5, payout2: 0.8, weight: 9, img: 'assets/symbols/ten.png' },
+  wild: { label: 'WILD', payout3: 12, payout2: 3, weight: 3, img: '../../assets/symbols/wild.webp', special: 'wild' },
+  scatter: { label: 'SCATTER', payout3: 0, payout2: 0, weight: 2, img: '../../assets/symbols/scatter.webp', special: 'scatter' },
+  gold: { label: 'Tesouro', payout3: 8, payout2: 2, weight: 6, img: '../../assets/symbols/gold.webp' },
+  jade: { label: 'Jade', payout3: 7, payout2: 1.8, weight: 6, img: '../../assets/symbols/jade.webp' },
+  envelope: { label: 'Envelope', payout3: 6, payout2: 1.6, weight: 7, img: '../../assets/symbols/envelope.webp' },
+  firecrackers: { label: 'Fogos', payout3: 5.5, payout2: 1.5, weight: 7, img: '../../assets/symbols/firecrackers.webp' },
+  accessory: { label: 'Acessório', payout3: 6.5, payout2: 1.7, weight: 7, img: '../../assets/symbols/accessory.webp' },
+  a: { label: 'A', payout3: 4.5, payout2: 1.2, weight: 9, img: '../../assets/symbols/a.webp' },
+  k: { label: 'K', payout3: 4.2, payout2: 1.1, weight: 9, img: '../../assets/symbols/k.webp' },
+  q: { label: 'Q', payout3: 4, payout2: 1, weight: 9, img: '../../assets/symbols/q.webp' },
+  j: { label: 'J', payout3: 3.7, payout2: 0.9, weight: 9, img: '../../assets/symbols/j.webp' },
+  ten: { label: '10', payout3: 3.5, payout2: 0.8, weight: 9, img: '../../assets/symbols/ten.webp' },
 };
 const normalIds = Object.keys(symbols);
 const paylines = [[0,1,2],[3,4,5],[6,7,8],[0,4,8],[2,4,6]];
@@ -150,8 +150,8 @@ async function playLynxBonusPot(baseWin){
   if(el.lynxStage){el.lynxStage.classList.remove('charged');el.lynxStage.classList.add('bonus-release');}
   if(el.slotMachine){el.slotMachine.classList.remove('lynx-impact');}
   if(el.lynxCharacter){
-    const staticSrc = el.lynxCharacter.dataset.staticSrc || 'assets/character/lynx-top.png';
-    const gifSrc = (el.lynxCharacter.dataset.gifSrc || 'assets/character/lynx-bonus.gif') + '?v=' + Date.now();
+    const staticSrc = el.lynxCharacter.dataset.staticSrc || '../../assets/characters/lynx-top.webp';
+    const gifSrc = (el.lynxCharacter.dataset.gifSrc || '../../assets/characters/lynx-bonus.webp') + '?v=' + Date.now();
     el.lynxCharacter.src = gifSrc;
     setTimeout(()=>{ el.lynxCharacter.src = staticSrc; }, animationMs);
   }

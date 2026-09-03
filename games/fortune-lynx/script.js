@@ -17,18 +17,18 @@ const state = {
 };
 
 const symbols = {
-  wild: { label: 'WILD', payout3: 15, payout2: 4, weight: 5, img: 'assets/symbols/wild.png', special: 'wild' },
-  scatter: { label: 'SCATTER', payout3: 0, payout2: 0, weight: 2, img: 'assets/symbols/scatter.png', special: 'scatter' },
-  gold: { label: 'Tesouro', payout3: 10, payout2: 2.5, weight: 7, img: 'assets/symbols/gold.png' },
-  jade: { label: 'Jade', payout3: 9, payout2: 2.2, weight: 7, img: 'assets/symbols/jade.png' },
-  envelope: { label: 'Envelope', payout3: 8, payout2: 2, weight: 8, img: 'assets/symbols/envelope.png' },
-  firecrackers: { label: 'Fogos', payout3: 7, payout2: 1.8, weight: 8, img: 'assets/symbols/firecrackers.png' },
-  accessory: { label: 'Acessório', payout3: 8.5, payout2: 2.1, weight: 8, img: 'assets/symbols/accessory.png' },
-  a: { label: 'A', payout3: 5, payout2: 1.4, weight: 12, img: 'assets/symbols/a.png' },
-  k: { label: 'K', payout3: 4.8, payout2: 1.3, weight: 12, img: 'assets/symbols/k.png' },
-  q: { label: 'Q', payout3: 4.4, payout2: 1.2, weight: 12, img: 'assets/symbols/q.png' },
-  j: { label: 'J', payout3: 4.2, payout2: 1.1, weight: 12, img: 'assets/symbols/j.png' },
-  ten: { label: '10', payout3: 4, payout2: 1, weight: 13, img: 'assets/symbols/ten.png' },
+  wild: { label: 'WILD', payout3: 15, payout2: 4, weight: 5, img: '../../assets/symbols/wild.webp', special: 'wild' },
+  scatter: { label: 'SCATTER', payout3: 0, payout2: 0, weight: 2, img: '../../assets/symbols/scatter.webp', special: 'scatter' },
+  gold: { label: 'Tesouro', payout3: 10, payout2: 2.5, weight: 7, img: '../../assets/symbols/gold.webp' },
+  jade: { label: 'Jade', payout3: 9, payout2: 2.2, weight: 7, img: '../../assets/symbols/jade.webp' },
+  envelope: { label: 'Envelope', payout3: 8, payout2: 2, weight: 8, img: '../../assets/symbols/envelope.webp' },
+  firecrackers: { label: 'Fogos', payout3: 7, payout2: 1.8, weight: 8, img: '../../assets/symbols/firecrackers.webp' },
+  accessory: { label: 'Acessório', payout3: 8.5, payout2: 2.1, weight: 8, img: '../../assets/symbols/accessory.webp' },
+  a: { label: 'A', payout3: 5, payout2: 1.4, weight: 12, img: '../../assets/symbols/a.webp' },
+  k: { label: 'K', payout3: 4.8, payout2: 1.3, weight: 12, img: '../../assets/symbols/k.webp' },
+  q: { label: 'Q', payout3: 4.4, payout2: 1.2, weight: 12, img: '../../assets/symbols/q.webp' },
+  j: { label: 'J', payout3: 4.2, payout2: 1.1, weight: 12, img: '../../assets/symbols/j.webp' },
+  ten: { label: '10', payout3: 4, payout2: 1, weight: 13, img: '../../assets/symbols/ten.webp' },
 };
 const normalIds = Object.keys(symbols);
 const paylines = [[0,1,2],[3,4,5],[6,7,8],[0,4,8],[2,4,6]];
@@ -46,7 +46,8 @@ const el = {
   winFlash: document.getElementById('winFlash'), coinRain: document.getElementById('coinRain'),
   bonusChargeLabel: document.getElementById('bonusChargeLabel'), bonusChargeFill: document.getElementById('bonusChargeFill'),
   lynxStage: document.getElementById('lynxStage'), lynxPotDrop: document.getElementById('lynxPotDrop'),
-  lynxPotValue: document.getElementById('lynxPotValue'), lynxCharacter: document.getElementById('lynxCharacter'), slotMachine: document.getElementById('slotMachine')
+  lynxPotValue: document.getElementById('lynxPotValue'), lynxCharacter: document.getElementById('lynxCharacter'), slotMachine: document.getElementById('slotMachine'),
+  bigWinOverlay: document.getElementById('bigWinOverlay'), bigWinKicker: document.getElementById('bigWinKicker'), bigWinTitle: document.getElementById('bigWinTitle'), bigWinAmount: document.getElementById('bigWinAmount'), bigWinSubtitle: document.getElementById('bigWinSubtitle')
 };
 
 let audioCtx = null;
@@ -61,6 +62,43 @@ function sfxLynxLaunch(){ [260,320,420,580].forEach((f,i)=>tone(f,.12,'triangle'
 function sfxFillTick(step=0){ tone(320 + step*26,.07,'square',.014); tone(520 + step*18,.05,'triangle',.012,.02); }
 function sfxFillFinish(){ [440,554,659,880].forEach((f,i)=>tone(f,.14,'triangle',.026,i*.05)); }
 function sfxSuspense(){ [210,240,270].forEach((f,i)=>tone(f,.18,'sawtooth',.016,i*.12)); tone(520,.16,'triangle',.018,.40); }
+function sfxBigWin(mega=false){ const seq=mega?[392,523,659,784,1047,1319]:[392,494,587,784,988]; seq.forEach((f,i)=>tone(f,.2,'triangle',.038,i*.075)); if(mega) tone(130,.7,'sine',.042,.18); }
+function winTier(value){ return value>=50?'MEGA GANHO':value>=10?'GRANDE GANHO':''; }
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+async function animateWinCounter(target,{force=false,subtitle='Parabéns!',duration=1700}={}){
+  if(!el.bigWinOverlay || target<=0) return;
+  const tier=winTier(target) || (force?'GRANDE GANHO':'');
+  if(!tier) return;
+  const mega=tier==='MEGA GANHO';
+  el.bigWinOverlay.classList.remove('mega','counting');
+  if(mega) el.bigWinOverlay.classList.add('mega');
+  el.bigWinOverlay.classList.add('show','counting');
+  el.bigWinOverlay.setAttribute('aria-hidden','false');
+  el.bigWinKicker.textContent='CONTANDO SEU PRÊMIO';
+  el.bigWinTitle.textContent='GANHO';
+  el.bigWinSubtitle.textContent=subtitle;
+  sfxBigWin(mega);
+  const start=performance.now();
+  await new Promise(resolve=>{
+    function step(now){
+      const t=Math.min(1,(now-start)/duration);
+      const eased=1-Math.pow(1-t,3);
+      el.bigWinAmount.textContent=money.format(target*eased);
+      if(t<1) requestAnimationFrame(step); else resolve();
+    }
+    requestAnimationFrame(step);
+  });
+  el.bigWinAmount.textContent=money.format(target);
+  el.bigWinOverlay.classList.remove('counting');
+  el.bigWinKicker.textContent=tier;
+  el.bigWinTitle.textContent=tier;
+  el.bigWinSubtitle.textContent=mega?'Prêmio especial!':'Grande prêmio!';
+  await sleep(1300);
+  el.bigWinOverlay.classList.remove('show','mega');
+  el.bigWinOverlay.setAttribute('aria-hidden','true');
+  await sleep(180);
+}
+
 
 function createCoinRain(count=22){ if(!el.coinRain) return; el.coinRain.innerHTML=''; for(let i=0;i<count;i++){ const c=document.createElement('i'); c.className='coin'; c.style.left=`${Math.random()*94+2}%`; c.style.setProperty('--dur',`${1.1+Math.random()*1.2}s`); c.style.animationDelay=`${Math.random()*.35}s`; el.coinRain.appendChild(c);} setTimeout(()=>el.coinRain.innerHTML='',2600); }
 function showWinFx(big=false){ if(el.winFlash){el.winFlash.classList.remove('show'); void el.winFlash.offsetWidth; el.winFlash.classList.add('show');} createCoinRain(big?34:18); }
@@ -150,8 +188,8 @@ async function playLynxBonusPot(baseWin){
   if(el.lynxStage){el.lynxStage.classList.remove('charged');el.lynxStage.classList.add('bonus-release');}
   if(el.slotMachine){el.slotMachine.classList.remove('lynx-impact');}
   if(el.lynxCharacter){
-    const staticSrc = el.lynxCharacter.dataset.staticSrc || 'assets/character/lynx-top.png';
-    const gifSrc = (el.lynxCharacter.dataset.gifSrc || 'assets/character/lynx-bonus.gif') + '?v=' + Date.now();
+    const staticSrc = el.lynxCharacter.dataset.staticSrc || '../../assets/characters/lynx-top.webp';
+    const gifSrc = (el.lynxCharacter.dataset.gifSrc || '../../assets/characters/lynx-bonus.webp') + '?v=' + Date.now();
     el.lynxCharacter.src = gifSrc;
     setTimeout(()=>{ el.lynxCharacter.src = staticSrc; }, animationMs);
   }
@@ -166,9 +204,11 @@ async function playLynxBonusPot(baseWin){
   const extraWin = Number(fillOutcome.total.toFixed(2));
   if(extraWin>0){ state.balance += extraWin; state.lastWin = Number((state.lastWin + extraWin).toFixed(2)); addHistory(`O preenchimento do slot gerou <b>${money.format(extraWin)}</b> adicionais.`); showWinFx(extraWin >= state.betOptions[state.betIndex]*5); }
   state.balance+=bonus; state.lastWin=Number((state.lastWin+bonus).toFixed(2)); setBonusCharge(0);
+  const lynxBonusTotal = Number((bonus + extraWin).toFixed(2));
   addHistory(`O <b>Pote do Lince</b> foi liberado: bônus extra de <b>${money.format(bonus)}</b> (10x do ganho base).`);
   updateStatus(`POTE DO LINCE! +${money.format(bonus)} em bônus x10!`,'bonus');
-  await new Promise(r=>setTimeout(r, 650));
+  await animateWinCounter(lynxBonusTotal,{force:true,subtitle:'Bônus WILD x10',duration:2200});
+  await new Promise(r=>setTimeout(r, 420));
   if(el.lynxStage)el.lynxStage.classList.remove('bonus-release');
   if(el.slotMachine)el.slotMachine.classList.remove('lynx-impact');
   updateUI();
@@ -206,7 +246,7 @@ async function spin(){
   if(outcome.wilds===2){ await animateAlmostBonus(outcome); }
   if(outcome.wilds>0){ addBonusCharge(outcome.wilds * 25); addHistory(`WILD x${outcome.wilds}: o Pote do Lince acumulou energia.`); }
   state.lastWin=Number(outcome.total.toFixed(2));
-  if(outcome.total>0){state.balance+=state.lastWin; await animateWinningLines(outcome.lineWins); updateStatus(`Você ganhou ${money.format(state.lastWin)}!`,'win');showWinFx(state.lastWin>=bet*10);sfxWin();addHistory(`Vitória de <b>${money.format(state.lastWin)}</b>. ${outcome.messages.join(' ')}`); renderGrid(outcome.highlights);}else{updateStatus(inFreeSpins?'Rodada grátis sem prêmio.':'Sem vitória neste giro.');addHistory(inFreeSpins?'Rodada grátis sem premiação.':'Giro sem vitória.')}
+  if(outcome.total>0){state.balance+=state.lastWin; await animateWinningLines(outcome.lineWins); updateStatus(`Você ganhou ${money.format(state.lastWin)}!`,'win');showWinFx(state.lastWin>=bet*10);sfxWin();addHistory(`Vitória de <b>${money.format(state.lastWin)}</b>. ${outcome.messages.join(' ')}`); renderGrid(outcome.highlights); if(state.lastWin>=10) await animateWinCounter(state.lastWin,{subtitle:'Vitória do giro'});}else{updateStatus(inFreeSpins?'Rodada grátis sem prêmio.':'Sem vitória neste giro.');addHistory(inFreeSpins?'Rodada grátis sem premiação.':'Giro sem vitória.')}
   if(outcome.scatters>=3){state.freeSpins+=8;state.bonusMultiplier=randomBonusMultiplier();updateStatus(`BÔNUS! 8 giros grátis + multiplicador x${state.bonusMultiplier}.`,'bonus');showWinFx(true);sfxBonus();addHistory(`SCATTER x${outcome.scatters}: <b>8 giros grátis</b> e multiplicador <b>x${state.bonusMultiplier}</b>.`)}else if(state.freeSpins===0){state.bonusMultiplier=1}
   const baseWin=state.lastWin; if(baseWin>0&&state.bonusCharge>=100) await playLynxBonusPot(baseWin);
   updateUI(); state.spinning=false;el.spinBtn.disabled=false;
